@@ -1,5 +1,6 @@
 ﻿using LocalMind.Server.Models.Users;
 using LocalMind.Server.Service.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace LocalMind.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;

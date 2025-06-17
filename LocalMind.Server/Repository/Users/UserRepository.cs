@@ -17,6 +17,7 @@ namespace LocalMind.Server.Repository.Users
         public async ValueTask<User> InsertUserAsync(User user)
         {
             await this.context.Users.AddAsync(user);
+            await this.context.SaveChangesAsync();
             return user;
         }
 

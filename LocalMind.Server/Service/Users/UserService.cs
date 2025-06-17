@@ -1,5 +1,6 @@
 ﻿using LocalMind.Server.Models.Users;
 using LocalMind.Server.Repository.Users;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +17,9 @@ namespace LocalMind.Server.Service.Users
 
         public async ValueTask<User> AddUserAsync(User user)
         {
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            user.CreatedAt = now;
+            user.UpdatedAt = now;
             return await this._userRepository.InsertUserAsync(user);
         }
 
