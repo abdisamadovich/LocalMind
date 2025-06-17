@@ -1,11 +1,15 @@
 using LocalMind.Server.DataContext;
 using LocalMind.Server.Repository.Users;
+using LocalMind.Server.Service.Accounts;
 using LocalMind.Server.Service.Users;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
+using System.Text;
 
 namespace LocalMind.Server
 {
@@ -14,6 +18,29 @@ namespace LocalMind.Server
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["AuthConfiguration:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["AuthConfiguration:Audience"],
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["AuthConfiguration:Key"]!))
+                };
+            });
+
+            builder.Services.AddAuthorization();
 
             // Add services to the container.
 
@@ -25,6 +52,7 @@ namespace LocalMind.Server
             });
             builder.Services.AddTransient<IUserRepository, UserRepository>();
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddDbContext<ApplicationDbContext>();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -49,6 +77,7 @@ namespace LocalMind.Server
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
