@@ -4,6 +4,7 @@ using LocalMind.Server.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LocalMind.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250629104137_AddUserAdditionalDetail")]
+    partial class AddUserAdditionalDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace LocalMind.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("LocalMind.Server.Models.UserAdditionalDetails.UserAdditionalDetail", b =>
+            modelBuilder.Entity("LocalMind.Server.Models.UserAdditionalDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,8 +48,7 @@ namespace LocalMind.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("userAdditionalDetails");
                 });
@@ -93,20 +95,15 @@ namespace LocalMind.Server.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("LocalMind.Server.Models.UserAdditionalDetails.UserAdditionalDetail", b =>
+            modelBuilder.Entity("LocalMind.Server.Models.UserAdditionalDetail", b =>
                 {
                     b.HasOne("LocalMind.Server.Models.Users.User", "User")
-                        .WithOne("UserAdditionalDetail")
-                        .HasForeignKey("LocalMind.Server.Models.UserAdditionalDetails.UserAdditionalDetail", "UserId")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LocalMind.Server.Models.Users.User", b =>
-                {
-                    b.Navigation("UserAdditionalDetail");
                 });
 #pragma warning restore 612, 618
         }

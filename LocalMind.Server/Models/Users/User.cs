@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LocalMind.Server.Models.UserAdditionalDetails;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LocalMind.Server.Models.Users
@@ -29,11 +30,7 @@ namespace LocalMind.Server.Models.Users
         public Role Role { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
-    }
 
-    public enum Role
-    {
-        Admin,
-        Student
+        public UserAdditionalDetail UserAdditionalDetail { get; set; }
     }
 }

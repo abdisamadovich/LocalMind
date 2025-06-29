@@ -1,4 +1,5 @@
-﻿using LocalMind.Server.Models.Users;
+﻿using LocalMind.Server.Models.UserAdditionalDetails;
+using LocalMind.Server.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -16,6 +17,7 @@ namespace LocalMind.Server.DataContext
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserAdditionalDetail> userAdditionalDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

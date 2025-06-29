@@ -1,4 +1,5 @@
 using LocalMind.Server.DataContext;
+using LocalMind.Server.Repository.UserAdditionalDetails;
 using LocalMind.Server.Repository.Users;
 using LocalMind.Server.Service.Accounts;
 using LocalMind.Server.Service.Users;
@@ -10,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace LocalMind.Server
 {
@@ -44,13 +46,18 @@ namespace LocalMind.Server
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LocalMind API", Version = "v1" });
             });
             builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<IUserAdditionalDetailRepository, UserAdditionalDetailRepository>();
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddDbContext<ApplicationDbContext>();

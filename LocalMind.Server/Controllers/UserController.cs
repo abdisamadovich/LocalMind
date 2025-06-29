@@ -30,6 +30,7 @@ namespace LocalMind.Server.Controllers
         public ActionResult<IQueryable<User>> GetAllUsers()
         {
             IQueryable<User> users = this._userService.RetriewAllUsers();
+
             return Ok(users);
         }
     }
