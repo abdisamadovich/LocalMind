@@ -1,5 +1,6 @@
 ﻿using LocalMind.Server.DataContext;
 using LocalMind.Server.Models.Users;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -21,6 +22,6 @@ namespace LocalMind.Server.Repository.Users
             return user;
         }
 
-        public IQueryable<User> SelectAllUsers() => this.context.Users;
+        public IQueryable<User> SelectAllUsers() => this.context.Users.Include(user => user.UserAdditionalDetail);
     }
 }
