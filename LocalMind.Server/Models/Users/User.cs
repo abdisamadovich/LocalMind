@@ -14,7 +14,7 @@ namespace LocalMind.Server.Models.Users
         public string UserName { get; set; }
 
         [Required]
-        public string Password { get; set; }
+        public string HashedPassword { get; set; }
 
         [Required]
         [MaxLength(50)]
