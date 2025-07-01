@@ -7,7 +7,6 @@ namespace LocalMind.Server.Repository.Users
     public interface IUserRepository
     {
         ValueTask<User> InsertUserAsync(User user);
-
         IQueryable<User> SelectAllUsers();
     }
 }
