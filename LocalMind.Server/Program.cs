@@ -1,4 +1,5 @@
 using LocalMind.Server.DataContext;
+using LocalMind.Server.Middleware;
 using LocalMind.Server.Repository.UserAdditionalDetails;
 using LocalMind.Server.Repository.Users;
 using LocalMind.Server.Service.Accounts;
@@ -82,6 +83,7 @@ namespace LocalMind.Server
                 app.MapScalarApiReference();
             }
 
+            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
